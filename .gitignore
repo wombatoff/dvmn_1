@@ -1,3 +1,9 @@
+#media
+media/
+
+#static
+static/
+
 # Pycharm
 .idea/
 
