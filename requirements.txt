@@ -2,3 +2,4 @@ Django==4.1.7
 Pillow==9.4.0
 geojson==3.0.1
 django-admin-sortable2==2.1.4
+django-tinymce==3.5.0
