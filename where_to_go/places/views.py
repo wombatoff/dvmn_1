@@ -1,4 +1,9 @@
-from django.views.generic import ListView
+import json
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
 from geojson import Feature, FeatureCollection, Point
 
 from .models import Place
@@ -18,11 +23,25 @@ class PlaceListView(ListView):
                 geometry=Point((place.lng, place.lat)),
                 properties={
                     'title': place.title,
-                    'placeId': '',
-                    'detailsUrl': ''
+                    'placeId': place.placeId,
+                    'detailsUrl': './places/' + str(place.pk)
                 }
             )
             features.append(feature)
         geojson_data = FeatureCollection(features)
         context['geojson_data'] = geojson_data
         return context
+
+
+class PlaceDetailView(DetailView):
+    model = Place
+
+    def get(self, request, *args, **kwargs):
+        place = get_object_or_404(Place, pk=kwargs['pk'])
+        data = {
+            'title': place.title,
+            'imgs': [image.image.url for image in place.images.all()],
+            'description_short': place.description_short,
+            'description_long': place.description_long,
+        }
+        return JsonResponse(data)
