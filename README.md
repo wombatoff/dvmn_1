@@ -32,7 +32,7 @@ DJANGO_SECRET_KEY=
 
 Применить миграции
 ```
-cd places
+cd where_to_go
 python manage.py migrate
 ```
 
