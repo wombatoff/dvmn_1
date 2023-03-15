@@ -1,25 +1,19 @@
 
-# Продуктовый помощник - Foodgram
+# Куда пойти — Москва глазами Артёма
 ### Описание
-Сайт, где пользователи смогут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
+Сайта о самых интересных местах в Москве
 
 ### Стек технологий:
 - Python
 - Django
-- Django Rest Framework
-- PostgreSQL
-- Docker
-- Workflow
-- nginx
-- Yandex.Cloud
 ---
 
-# Порядок запуска
+
 ## Запуск проекта локально
 Клонировать репозиторий и перейти в него:
 ```
-git clone https://github.com/mv-31/foodgram-project-react.git
-cd backend
+git clone https://github.com/wombatoff/dvmn_1.git
+cd dvmn_1
 ```
 
 Создать и активировать виртуальное окружение, обновить pip и установить зависимости:
@@ -30,156 +24,54 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Перейти в папку infra и cоздать файл .env:
+Создать файл .env и заполнить его:
 ```
-cd ..
-cd infra
-touch .env
-```
-
-Шаблон наполнения .env
-```
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-DB_HOST=
-DB_PORT=
-```
-
-Запустить сборку контейнеров:
-```
-docker-compose up -d --build
+DEBUG=
+DJANGO_SECRET_KEY=
 ```
 
 Применить миграции
 ```
-docker-compose exec backend python manage.py migrate
+cd places
+python manage.py migrate
 ```
 
 Создать суперпользователя
 ```
-docker-compose exec backend python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
-Собрать статические файлы:
+Заполнить базу данными (список команд static\places\load_places.sh)
 ```
-docker-compose exec backend python manage.py collectstatic --no-input 
+python manage.py load_place "http://91.235.234.237/static/places/Антикафе Bizone"
+...
+python manage.py load_place "http://91.235.234.237/static/places/Японский сад.json.json"
 ```
-
-Заполнить базу ингридиентами и тегами:
+Шаблон для создания файла с данными о месте:
 ```
-docker-compose exec backend python manage.py loaddata recipes/data/ingredient.json
-docker-compose exec backend python manage.py loaddata recipes/data/tag.json
+{
+    "title": "Название",
+    "imgs": [
+        "http://url_image_1",
+        "http://url_image_2",
+        ...
+    ],
+    "description_short": "Краткое описание",
+    "description_long": "Полное описание",
+    "coordinates": {
+        "lng": 37.620070,
+        "lat": 55.753630
+    }
 ```
-
-## Запуск проекта на сервере
-### Репозиторий
-1. Клонировать репозиторий
-2. В репозитории на гитхаб 
- ```Settings - Secrets - Actions```
-добавите следующие ключи:
-
-> DOCKER_USERNAME - имя пользователя docker;  
-> DOCKER_PASSWORD - пароль docker;  
-> HOST - ip-адрес сервера;  
-> USER - имя пользователя для сервера;  
-> SSH_KEY - приватный ключ с компьютера, имеющего доступ к боевому серверу ``` cat ~/.ssh/id_rsa ```;  
-> PASSPHRASE - пароль для сервера;  
-> DB_ENGINE=django.db.backends.postgresql - указываем, что работаем с postgresql;  
-> DB_NAME=postgres - имя базы данных;  
-> POSTGRES_USER - логин для подключения к базе данных;  
-> POSTGRES_PASSWORD - пароль для подключения к БД;  
-> DB_HOST=db - название сервиса (контейнера);  
-> DB_PORT=5432 - порт для подключения к БД;  
-> TELEGRAM_TO - id своего телеграм-аккаунта (можно узнать у @userinfobot, команда /start);  
-> TELEGRAM_TOKEN - токен бота (получить токен можно у @BotFather, /token, имя бота);
-
-3. Измените имя пользователя DockerHub в docker-compose.yaml
-
-### Подготовка сервера
-- Запустить сервер и подключиться к нему:
-```
-ssh username@ip_address
-```
-- Установить обновления apt:
-```
-sudo apt upgrade -y
-```
-- Установить nginx:
-```
-sudo apt install nginx
-```
-- Остановить службу nginx:
-```
-sudo systemctl stop nginx
-```
-- Установить docker:
-```
-sudo apt install docker.io
-```
-- Установить стабильную версию docker-compose: 
-```
-sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-```
-- Применить к файлу права доступа: 
-```
-sudo chmod +x /usr/local/bin/docker-compose
-```
-- Проверить версию docker-compose:
-```
-docker-compose --version
-```  
-- Создать на сервере два файла и скопировать в них код из проекта на GitHub:  
-  - home/'username'/docker-compose.yml  
-  ```
-  sudo nano docker-compose.yaml
-  ```  
-    
-  - home/'username'/nginx/default.conf
-  ```
-  mkdir nginx
-  ```  
-  ```
-  sudo nano nginx/default.conf
-  ```
-
-### Развертывание приложения на боевом сервере
-
-- Запушить репозиторий. Статус работы отображается в Actions на GitHub.
-- Сделать миграции
-```
-sudo docker-compose exec backend python manage.py migrate
-```
-- Создать суперпользователя
-```
-sudo docker-compose exec backend python manage.py createsuperuser
-```
-- Собрать статику
-```
-sudo docker-compose exec backend python manage.py collectstatic --no-inpu
-```
-- Заполнить базу ингридиентами
-```
-sudo docker-compose exec backend python manage.py loaddata recipes/data/ingredient.json
-```
-- Заполни базу тегами
-```
-sudo docker-compose exec backend python manage.py loaddata recipes/data/tag.json
-```
-
 ---
-# Сайт проекта Foodgram
-```
-http://158.160.9.118/
-```
-    
-### Документация API Foodgram
+# Сайт проекта - Москва глазами Артёма
 
-```
-http://158.160.9.118/redoc/
-```
+[http://91.235.234.237/](http://91.235.234.237/)
+
+
+    
+
 
 ### Автор:
 
-[mv-31](https://github.com/mv-31/ "mv-31")
+[Wombatoff](https://github.com/wombatoff/)
