@@ -10,6 +10,7 @@ class Place(models.Model):
     description_long = HTMLField()
     lng = models.FloatField()
     lat = models.FloatField()
+    objects = models.Manager()
 
     def __str__(self):
         return self.title

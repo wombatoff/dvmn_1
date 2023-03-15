@@ -3,8 +3,21 @@ from io import BytesIO
 import requests
 from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 
 from ...models import Place, Image
+
+
+def generate_unique_slug(title):
+    base_slug = slugify(title)
+    slug = base_slug
+    count = 1
+
+    while Place.objects.filter(placeId=slug).exists():
+        slug = f"{base_slug}-{count}"
+        count += 1
+
+    return slug
 
 
 class Command(BaseCommand):
@@ -21,6 +34,7 @@ class Command(BaseCommand):
 
         place = Place(
             title=data["title"],
+            placeId=generate_unique_slug(data["title"]),
             description_short=data["description_short"],
             description_long=data["description_long"],
             lng=data["coordinates"]["lng"],
