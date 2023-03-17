@@ -40,6 +40,13 @@ python manage.py migrate
 ```
 python manage.py createsuperuser
 ```
+Шаблон наполнения .env
+```
+DEBUG=
+DJANGO_SECRET_KEY=
+DJANGO_ALLOWED_HOSTS=
+```
+
 
 Заполнить базу данными (список команд static\places\load_places.sh)
 ```
