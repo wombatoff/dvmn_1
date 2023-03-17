@@ -28,6 +28,7 @@ pip install -r requirements.txt
 ```
 DEBUG=
 DJANGO_SECRET_KEY=
+DJANGO_ALLOWED_HOSTS=
 ```
 
 Применить миграции
@@ -39,12 +40,6 @@ python manage.py migrate
 Создать суперпользователя
 ```
 python manage.py createsuperuser
-```
-Шаблон наполнения .env
-```
-DEBUG=
-DJANGO_SECRET_KEY=
-DJANGO_ALLOWED_HOSTS=
 ```
 
 
