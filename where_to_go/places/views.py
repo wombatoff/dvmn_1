@@ -23,7 +23,7 @@ class PlaceListView(ListView):
                 geometry=Point((place.lng, place.lat)),
                 properties={
                     'title': place.title,
-                    'placeId': place.placeId,
+                    'placeId': place.pk,
                     'detailsUrl': './places/' + str(place.pk)
                 }
             )
