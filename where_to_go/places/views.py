@@ -1,8 +1,5 @@
-import json
-
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from geojson import Feature, FeatureCollection, Point
 
