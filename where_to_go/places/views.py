@@ -35,10 +35,10 @@ class PlaceDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         place = get_object_or_404(Place, pk=kwargs['pk'])
-        data = {
+        response_data = {
             'title': place.title,
             'imgs': [image.image.url for image in place.images.all()],
             'description_short': place.description_short,
             'description_long': place.description_long,
         }
-        return JsonResponse(data)
+        return JsonResponse(response_data, safe=False, json_dumps_params={'ensure_ascii': False, 'indent': 2})
