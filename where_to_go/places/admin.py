@@ -7,14 +7,13 @@ from .admin_image_utils import image_preview
 
 class ImageInLine(SortableStackedInline):
     model = Image
-    readonly_fields = ('image_preview',)
+    readonly_fields = (image_preview,)
     ordering = ('order',)
     list_display = (
         'order',
         'place',
-        'image_preview',
+        image_preview,
     )
-    image_preview = staticmethod(image_preview)
 
 
 @admin.register(Place)
@@ -34,10 +33,9 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
 class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = (
         'place',
-        'image_preview',
+        image_preview,
         'order',
         'image',
     )
     empty_value_display = '-пусто-'
-    readonly_fields = ('image_preview',)
-    image_preview = staticmethod(image_preview)
+    readonly_fields = (image_preview,)
