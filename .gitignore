@@ -1,9 +1,6 @@
 #media
 media/
 
-#static
-staticfiles/
-
 # Pycharm
 .idea/
 
