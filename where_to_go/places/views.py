@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from geojson import Feature, FeatureCollection, Point
 
@@ -21,7 +22,7 @@ class PlaceListView(ListView):
                 properties={
                     'title': place.title,
                     'placeId': place.pk,
-                    'detailsUrl': './places/' + str(place.pk)
+                    'detailsUrl': reverse('place', args=(place.pk,)),
                 }
             )
             features.append(feature)
