@@ -21,8 +21,8 @@ class Command(BaseCommand):
 
         place = Place(
             title=row_place_data["title"],
-            description_short=row_place_data["description_short"],
-            description_long=row_place_data["description_long"],
+            description_short=row_place_data.get("description_short"),
+            description_long=row_place_data.get("description_long"),
             lng=row_place_data["coordinates"]["lng"],
             lat=row_place_data["coordinates"]["lat"],
         )
