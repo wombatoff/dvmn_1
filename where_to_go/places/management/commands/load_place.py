@@ -17,18 +17,18 @@ class Command(BaseCommand):
         response = requests.get(json_url)
         response.raise_for_status()
 
-        data = response.json()
+        row_place_data = response.json()
 
         place = Place(
-            title=data["title"],
-            description_short=data["description_short"],
-            description_long=data["description_long"],
-            lng=data["coordinates"]["lng"],
-            lat=data["coordinates"]["lat"],
+            title=row_place_data["title"],
+            description_short=row_place_data["description_short"],
+            description_long=row_place_data["description_long"],
+            lng=row_place_data["coordinates"]["lng"],
+            lat=row_place_data["coordinates"]["lat"],
         )
         place.save()
 
-        for order, image_url in enumerate(data["imgs"], start=1):
+        for order, image_url in enumerate(row_place_data["imgs"], start=1):
             image_response = requests.get(image_url)
             image_response.raise_for_status()
 
