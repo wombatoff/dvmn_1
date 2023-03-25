@@ -45,7 +45,7 @@ class Command(BaseCommand):
         )
 
         if created:
-            load_images_for_place(place, raw_place_data['imgs'])
+            load_images_for_place(place, raw_place_data.get('imgs', []))
             self.stdout.write(self.style.SUCCESS(f'Successfully loaded data from {json_url}'))
         else:
             self.stdout.write(self.style.WARNING(f'Place with title "{place.title}" already exists'))
